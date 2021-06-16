@@ -8,13 +8,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
+      hashPassword: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       authLink: {
         type: DataTypes.STRING,
         allowNull: false
       },
       authId: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
       profileImgURL: {
         type: DataTypes.STRING,

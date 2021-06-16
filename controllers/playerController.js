@@ -10,7 +10,9 @@ exports.getAll = (req,res) =>{
 }
 
 exports.addNew = (req,res) =>{
-    if(req.body.text == null){
+    
+    
+    if(req.body.pName == null){
         res.status(500).send("Text filed is missing")
     }
 

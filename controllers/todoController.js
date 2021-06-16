@@ -10,6 +10,8 @@ exports.getAll = (req,res) =>{
 }
 
 exports.addNew = (req,res) =>{
+    const newTodo = req.body;
+    console.log(newTodo);
     if(req.body.text == null){
         res.status(500).send("Text Cannot be empty")
     }
