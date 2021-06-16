@@ -1,58 +1,54 @@
 const db = require("../models");
 const playerObj = db.Player;
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
-exports.getAll = (req,res) =>{
-    db.playerObj.findAll().then(players => res.send(players)).catch(err => {
-        result.status(500).send({
-          message: err.message || "Some error occurred while retrieving data."
-        });
-      });
+exports.getAllPlayer = async (req,res) =>{
+    try {
+        let allPlayers = await playerObj.findAll();
+        return res.json(allPlayers)
+    }catch(err){
+        return res.status(500).send(err)
+    }    
 }
 
-exports.addNew = (req,res) =>{
-    
-    
-    if(req.body.pName == null){
-        res.status(500).send("Text filed is missing")
+// Create Player profile
+exports.addNewPlayer = async (req,res) =>{
+    const errorMsg =[];
+    const newPlayer = req.body;
+    if( newPlayer== null){
+        return res.json({
+            message:"Validation Error",
+            error : "Player Object is null"
+        })
     }
-
-    playerObj.create({
-        text:req.body.text
-    }).then(submited => res.send(submited));
-}
-
-exports.findById = (req, res) =>{
-    playerObj.findAll({
-        where:{
-            id:req.params.id
-        }
-    }).then(player => res.send(player));
-}
-
-exports.delete = (req,res) =>{
-    playerObj.destroy({
-        where:
-        {
-            id: req.params.id
-        }
-    }).then(()=>res.send("Deleted!"))
-}
-
-exports.update = (req, res) =>{
-    if(req.body.text == null){
-        res.status(500).send("Text Cannot be empty")
+    if(newPlayer.pname == null || (!newPlayer.pname)){
+        errorMsg.push("Player Name filed is missing")
     }
-
-    if(req.body.id == null){
-        res.status(500).send("Id Cannot be empty")
+    if(newPlayer.email == null || (!newPlayer.email)){
+        errorMsg.push("Email Address filed is missing")
     }
-
-    playerObj.update({
-        text: req.body.text
-    },
+    if(errorMsg.length >0)
     {
-        where:{
-            id: req.body.id
-        }
-    }).then(() => res.send("Updated!"))
+        return res.json({
+            message:"Validation Error",
+            error : errorMsg
+        })
+    }
+
+    try{
+    let hashPassword = await bcrypt.hash(newPlayer.password, saltRounds)
+        let playerCreated = await playerObj.create({
+            pname:newPlayer.pname,
+            email : newPlayer.email,
+            hpassword : hashPassword,
+            authlink : newPlayer.authlink
+        });
+        return res.json({
+            "message":"New Player record created",
+            "player" : playerCreated
+        })
+    }catch(err){
+        return res.status(500).send(err)
+    }
 }

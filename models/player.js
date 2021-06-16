@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const Player = sequelize.define("Player", {
-      pName: {
+      pname: {
         type: DataTypes.STRING,
         allowNull: false
       },
@@ -8,19 +8,19 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      hashPassword: {
+      hpassword: {
         type: DataTypes.STRING,
         allowNull: true
       },
-      authLink: {
+      authlink: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      authId: {
+      authid: {
         type: DataTypes.STRING,
         allowNull: true
       },
-      profileImgURL: {
+      profileimgurl: {
         type: DataTypes.STRING,
         allowNull: true
       }
