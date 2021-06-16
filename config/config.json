@@ -1,11 +1,16 @@
 {
   "development": {
-    "username": "root",
-    "password": "Mission90Days",
+    "username": "codeadmin@28codeserver",
+    "password": "Mission90Days!",
     "database": "sampleCard",
-    "host": "localhost",
+    "host": "28codeserver.mysql.database.azure.com",
     "dialect": "mysql",
-    "operatorsAliases": 0
+    "ssl":true,
+    "dialectOptions": {
+      "ssl": {
+         "require": true
+      }
+    }
   },
   "test": {
     "username": "root",
