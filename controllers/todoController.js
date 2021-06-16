@@ -1,44 +1,66 @@
 const db = require("../models");
 const todoObj = db.Todo;
 
-exports.getAll = (req,res) =>{
-    db.Todo.findAll().then(todos => res.send(todos)).catch(err => {
-        result.status(500).send({
-          message: err.message || "Some error occurred while retrieving data."
-        });
-      });
+exports.getAll = async (req,res) =>{
+    try {
+        let allTodos = await db.Todo.findAll();
+        return res.json(allTodos)
+    }catch(err){
+        return res.status(500).send(err)
+    }
 }
 
-exports.addNew = (req,res) =>{
+exports.addNew = async (req,res) =>{
     const newTodo = req.body;
-    console.log(newTodo);
-    if(req.body.text == null){
+    if(  newTodo == null || newTodo.text == null){
         res.status(500).send("Text Cannot be empty")
     }
 
-    todoObj.create({
-        text:req.body.text
-    }).then(submitedTodo => res.send(submitedTodo));
+    try{
+       let todoCreated= await todoObj.create(newTodo);
+        return res.json({
+            "message" : "Created sucessfully",
+            todoCreated :  todoCreated
+        })
+    }catch (err) {
+        return res.status(500).send(err)
+      }
 }
 
-exports.findById = (req, res) =>{
-    todoObj.findAll({
-        where:{
-            id:req.params.id
-        }
-    }).then(todo => res.send(todo));
+exports.findById = async (req, res) =>{
+    try{   
+        let todoOne = await todoObj.findAll({
+                    where:
+                    {
+                        id:req.params.id
+                    }
+                });
+        return res.json({
+            message:"Feeling good",
+            todoOne: todoOne
+        });
+    }catch (err) {
+        return res.status(500).send(err)
+      }
 }
 
-exports.delete = (req,res) =>{
-    todoObj.destroy({
-        where:
-        {
-            id: req.params.id
-        }
-    }).then(()=>res.send("Deleted!"))
+exports.delete = async (req,res) =>{
+    try{
+        await todoObj.destroy({
+            where:
+            {
+                id: req.params.id
+            }
+        })
+        return res.json({
+            "message" : "Deleted sucessfully"
+        })
+    }catch(err)  {
+        return res.status(500).send(err)
+    }
 }
 
-exports.update = (req, res) =>{
+exports.update = async (req, res) =>{
     if(req.body.text == null){
         res.status(500).send("Text Cannot be empty")
     }
@@ -47,12 +69,19 @@ exports.update = (req, res) =>{
         res.status(500).send("Id Cannot be empty")
     }
 
-    todoObj.update({
-        text: req.body.text
-    },
-    {
-        where:{
-            id: req.body.id
-        }
-    }).then(() => res.send("Updated!"))
+    try{
+        await  todoObj.update({
+            text: req.body.text
+        },
+        {
+            where:{
+                id: req.body.id
+            }
+        })
+        return res.json({
+            "message" : "Updated sucessfully"
+        })
+    }catch(err){
+        res.status(500).send("Id Cannot be empty")
+    }
 }
