@@ -8,21 +8,25 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      hpassword: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
       authlink: {
         type: DataTypes.STRING,
         allowNull: false
       },
       authid: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
       },
-      profileimgurl: {
+      imgurl: {
         type: DataTypes.STRING,
         allowNull: true
+      },
+      totalpoint: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      islive: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
       }
     });
     return Player;

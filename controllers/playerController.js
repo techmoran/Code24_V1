@@ -37,12 +37,15 @@ exports.addNewPlayer = async (req,res) =>{
     }
 
     try{
-    let hashPassword = await bcrypt.hash(newPlayer.password, saltRounds)
+    //let hashPassword = await bcrypt.hash(newPlayer.password, saltRounds)
         let playerCreated = await playerObj.create({
             pname:newPlayer.pname,
             email : newPlayer.email,
-            hpassword : hashPassword,
-            authlink : newPlayer.authlink
+            authlink : newPlayer.authlink,
+            authid: newPlayer.authid,
+            imgurl: newPlayer.imgurl,
+            totalpoint : newPlayer.totalpoint,
+            islive: newPlayer.islive
         });
         return res.json({
             "message":"New Player record created",
