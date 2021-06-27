@@ -49,6 +49,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true
       },
     });
-    return Todo;
+    return Game;
   };
   

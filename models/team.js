@@ -10,6 +10,6 @@ module.exports = (sequelize, DataTypes) => {
       }
 
     });
-    return Todo;
+    return Team;
   };
   
